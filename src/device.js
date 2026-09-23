@@ -1,0 +1,6 @@
+window.KidzDevice={
+ id(){let id=localStorage.getItem("kc_device_id");if(!id){id=crypto.randomUUID?.()||"dev-"+Date.now();localStorage.setItem("kc_device_id",id)}return id},
+ info(){return{id:this.id(),platform:navigator.platform||"Web",language:navigator.language,online:navigator.onLine,userAgent:navigator.userAgent,screen:screen.width+"x"+screen.height,lastSeen:new Date().toISOString()}},
+ supported(){return{notifications:"Notification"in window,broadcast:"BroadcastChannel"in window,storage:"localStorage"in window,pwa:"serviceWorker"in navigator}},
+ render(){const i=this.info(),s=this.supported();return '<div class="device-card"><div class="device-icon">▣</div><div><b>Deze browser</b><p>'+i.platform+' · '+i.screen+'</p><small>'+i.id+'</small></div></div><div class="rule-row"><b>Tab sync</b><span>'+(s.broadcast?"Ondersteund":"Niet ondersteund")+'</span></div><div class="rule-row"><b>Browsermeldingen</b><span>'+(s.notifications?"Ondersteund":"Niet ondersteund")+'</span></div><div class="rule-row"><b>PWA-basis</b><span>'+(s.pwa?"Browser ondersteunt het":"Niet ondersteund")+'</span></div>'}
+};
