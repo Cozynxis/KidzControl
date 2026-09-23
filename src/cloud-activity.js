@@ -1,0 +1,5 @@
+window.KidzCloudActivity={
+ async list(limit=100){if(!kidzCloudState.child)return[];const {data,error}=await kidzCloud.client.from("activity_events").select("*").eq("child_id",kidzCloudState.child.id).order("created_at",{ascending:false}).limit(limit);if(error)throw error;return data||[]},
+ async hydrate(){const rows=await this.list(100);if(!rows.length)return;state.events=rows.map(x=>({type:x.event_type,at:x.created_at,metadata:x.metadata}));localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return rows},
+ async export(){const rows=await this.list(500);const blob=new Blob([JSON.stringify(rows,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kidzcontrol-activity-"+KidzFeatures.todayKey()+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+};
