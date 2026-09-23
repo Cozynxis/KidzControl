@@ -1,0 +1,5 @@
+window.KidzSecurity={
+ score(){let s=0;if(kidzCloud?.ready)s+=25;if(location.protocol==="https:")s+=25;if(state?.parentPin&&state.parentPin.length>=4)s+=20;if(Notification.permission!=="denied")s+=10;if(kidzCloudState?.family)s+=20;return Math.min(100,s)},
+ checks(){return[{name:"HTTPS",ok:location.protocol==="https:"},{name:"Supabase client",ok:!!kidzCloud?.ready},{name:"Cloud family",ok:!!kidzCloudState?.family},{name:"Parent PIN",ok:!!state?.parentPin},{name:"Verborgen monitoring",ok:false,info:"Niet gebruikt"}]},
+ render(){return '<div class="security-score"><strong>'+this.score()+'%</strong><span>configuratiescore</span></div>'+this.checks().map(x=>'<div class="rule-row"><b>'+x.name+'</b><span class="'+(x.ok?"status-ok":"muted")+'">'+(x.info|| (x.ok?"OK":"Niet actief"))+'</span></div>').join("")}
+};
