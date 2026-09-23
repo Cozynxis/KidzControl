@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="nl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#625cff">
+  <title>KidzControl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div id="toastHost" class="toast-host"></div>
+<div id="modalHost"></div>
+
+<section id="authView" class="auth-shell">
+  <div class="auth-glow glow-a"></div><div class="auth-glow glow-b"></div>
+  <div class="brand-card">
+    <div class="logo big">K</div>
+    <div><h1>KidzControl</h1><p>Rust, overzicht en gezonde digitale afspraken.</p></div>
+  </div>
+  <div class="auth-card glass">
+    <span class="eyebrow">WELKOM</span>
+    <h2>Kies hoe je wilt openen</h2>
+    <p class="muted">Parent Mode beheert regels. Kids Mode past ze live toe in andere browsertabs.</p>
+    <div class="mode-grid">
+      <button class="mode-card parent" data-open-mode="parent"><span class="mode-icon">P</span><b>Parent Mode</b><small>Beheer, inzichten & regels</small></button>
+      <button class="mode-card kid" data-open-mode="kid"><span class="mode-icon">K</span><b>Kids Mode</b><small>Dagoverzicht & verzoeken</small></button>
+    </div>
+    <div class="auth-divider"><span>beveiliging</span></div>
+    <label class="field"><span>Parent PIN</span><input id="pinInput" inputmode="numeric" maxlength="6" placeholder="Standaard: 2468"></label>
+    <button id="unlockParent" class="primary full">Parent Mode ontgrendelen</button>
+    <p class="tiny">Prototype V1 gebruikt lokale browseropslag. Supabase-koppeling staat voorbereid in Instellingen → Cloud.</p>
+  </div>
+</section>
+
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-brand"><div class="logo">K</div><div><b>KidzControl</b><small id="modeLabel">Parent</small></div></div>
+    <nav id="nav"></nav>
+    <div class="side-bottom">
+      <button class="nav-item" data-action="theme"><span>◐</span><span>Thema</span></button>
+      <button class="nav-item danger-soft" data-action="logout"><span>↪</span><span>Mode verlaten</span></button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><p id="breadcrumb" class="eyebrow">KIDZCONTROL</p><h1 id="pageTitle">Overzicht</h1></div>
+      <div class="top-actions">
+        <div id="syncPill" class="sync-pill"><span class="dot"></span>Live tabsync</div>
+        <button class="icon-btn" data-action="notifications">🔔<span id="notificationBadge" class="badge-dot"></span></button>
+        <button class="profile-chip" data-action="profile"><span id="topAvatar">M</span><div><b id="topName">Milan</b><small id="topRole">Kindprofiel</small></div></button>
+      </div>
+    </header>
+    <div id="content" class="content"></div>
+  </main>
+</div>
+
+<template id="dashboardParent">
+  <section class="hero parent-hero">
+    <div><span class="eyebrow">GOEDE AVOND</span><h2>Alles onder controle.</h2><p>Bekijk schermtijd, pas regels aan en reageer op verzoeken.</p></div>
+    <button class="primary" data-action="quickLock">⏸ Pauzeer Kids Mode</button>
+  </section>
+  <div class="stats-grid">
+    <article class="stat"><span>Schermtijd vandaag</span><strong data-stat="used">0m</strong><small data-stat="limitText">van 3u</small><div class="progress"><i data-progress="screen"></i></div></article>
+    <article class="stat"><span>Resterend</span><strong data-stat="remaining">0m</strong><small>vandaag beschikbaar</small></article>
+    <article class="stat"><span>Geblokkeerd</span><strong data-stat="blocked">0</strong><small>websites & apps</small></article>
+    <article class="stat"><span>Verzoeken</span><strong data-stat="requests">0</strong><small>openstaand</small></article>
+  </div>
+  <div class="two-col">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">VANDAAG</span><h3>Activiteit</h3></div><button class="ghost" data-nav="activity">Alles bekijken</button></div><div id="activityChart" class="bars"></div></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">SNEL</span><h3>Direct regelen</h3></div></div><div class="quick-grid">
+      <button data-action="add30" class="quick"><b>+30 min</b><small>Extra tijd</small></button>
+      <button data-action="bedNow" class="quick"><b>Bedtijd</b><small>Nu starten</small></button>
+      <button data-nav="filters" class="quick"><b>Webfilter</b><small>Beheer blokkades</small></button>
+      <button data-nav="schedule" class="quick"><b>Planning</b><small>Vandaag aanpassen</small></button>
+    </div></article>
+  </div>
+  <div class="two-col">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">VERZOEKEN</span><h3>Wacht op jou</h3></div></div><div id="requestList"></div></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">PROFIEL</span><h3 data-child-name>Milan</h3></div><button class="ghost" data-nav="profile">Bewerken</button></div><div id="ruleSummary" class="rule-summary"></div></article>
+  </div>
+</template>
+
+<template id="dashboardKid">
+  <section class="hero kid-hero"><div><span class="eyebrow">JOUW DAG</span><h2>Hoi, <span data-child-name>Milan</span> 👋</h2><p>Hier zie je hoeveel tijd je nog hebt en welke afspraken vandaag gelden.</p></div><div class="time-orb"><b data-stat="remaining">0m</b><small>over</small></div></section>
+  <div id="kidLockBanner"></div>
+  <div class="stats-grid kid-stats">
+    <article class="stat"><span>Gebruikt</span><strong data-stat="used">0m</strong><small>vandaag</small></article>
+    <article class="stat"><span>Daglimiet</span><strong data-stat="limit">3u</strong><small>ingesteld door ouder</small></article>
+    <article class="stat"><span>Bedtijd</span><strong data-stat="bedtime">21:30</strong><small>vandaag</small></article>
+    <article class="stat"><span>Schoolmodus</span><strong data-stat="school">Uit</strong><small>volgens planning</small></article>
+  </div>
+  <div class="two-col">
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">TIJD</span><h3>Schermtijd</h3></div></div><div class="ring-wrap"><div class="ring" id="timeRing"><div><b data-stat="remaining">0m</b><small>resterend</small></div></div><button class="primary kid-primary" data-action="requestTime">Vraag extra tijd</button></div></article>
+    <article class="panel"><div class="panel-head"><div><span class="eyebrow">AFSPRAKEN</span><h3>Vandaag</h3></div></div><div id="kidRules" class="rule-summary"></div></article>
+  </div>
+  <article class="panel"><div class="panel-head"><div><span class="eyebrow">TOEGANG</span><h3>Website of app geblokkeerd?</h3></div></div><div class="request-row"><input id="accessTarget" placeholder="Bijv. youtube.com of Discord"><button class="primary kid-primary" data-action="requestAccess">Toegang vragen</button></div></article>
+</template>
+
+<script src="./app.js"></script>
+</body></html>
