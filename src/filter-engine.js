@@ -1,0 +1,8 @@
+window.KidzFilterEngine={
+ normalize(v){return String(v||"").trim().toLowerCase().replace(/^https?:\/\//,"").split("/")[0].replace(/^www\./,"")},
+ matchDomain(domain,rule){return domain===rule||domain.endsWith("."+rule)},
+ check(target){const d=this.normalize(target);if(!d)return{allowed:false,reason:"Ongeldig adres"};if(state.filters.allowedSites.some(x=>this.matchDomain(d,this.normalize(x))))return{allowed:true,reason:"Expliciet toegestaan"};if(state.filters.blockedSites.some(x=>this.matchDomain(d,this.normalize(x))))return{allowed:false,reason:"Geblokkeerd door ouder"};return{allowed:!state.filters.unknown,reason:state.filters.unknown?"Onbekende websites zijn geblokkeerd":"Geen blokkaderegel gevonden"}},
+ add(kind,value){value=this.normalize(value);if(!value)return false;const list=kind==="allow"?state.filters.allowedSites:state.filters.blockedSites;if(!list.includes(value))list.push(value);return true},
+ remove(kind,value){const key=kind==="allow"?"allowedSites":"blockedSites";state.filters[key]=state.filters[key].filter(x=>x!==value)},
+ renderLists(){const row=(v,k)=>'<div class="list-row"><div><b>'+esc(v)+'</b><small class="muted">'+(k==="allow"?"Toegestaan":"Geblokkeerd")+'</small></div><button class="mini no" data-action="removeFilter" data-kind="'+k+'" data-value="'+esc(v)+'">Verwijder</button></div>';return '<div class="two-col"><article class="panel"><h3>Geblokkeerd</h3>'+state.filters.blockedSites.map(v=>row(v,"block")).join("")+'</article><article class="panel"><h3>Toegestaan</h3>'+state.filters.allowedSites.map(v=>row(v,"allow")).join("")+'</article></div>'}
+};
