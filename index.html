@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css">\n  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="toastHost" class="toast-host"></div>
@@ -31,7 +31,7 @@
     <div class="auth-divider"><span>beveiliging</span></div>
     <label class="field"><span>Parent PIN</span><input id="pinInput" inputmode="numeric" maxlength="6" placeholder="Standaard: 2468"></label>
     <button id="unlockParent" class="primary full">Parent Mode ontgrendelen</button>
-    <p class="tiny">Prototype V1 gebruikt lokale browseropslag. Supabase-koppeling staat voorbereid in Instellingen → Cloud.</p>
+    <div id="cloudAuth"></div><p class="tiny">Tabsync werkt lokaal; Supabase Auth is gekoppeld voor de cloudlaag.</p>
   </div>
 </section>
 
@@ -99,5 +99,5 @@
   <article class="panel"><div class="panel-head"><div><span class="eyebrow">TOEGANG</span><h3>Website of app geblokkeerd?</h3></div></div><div class="request-row"><input id="accessTarget" placeholder="Bijv. youtube.com of Discord"><button class="primary kid-primary" data-action="requestAccess">Toegang vragen</button></div></article>
 </template>
 
-<script src="./app.js"></script>
+<script src="./src/config.js"></script>\n<script src="./src/supabase.js"></script>\n<script src="./src/features.js"></script>\n<script src="./src/auth.js"></script>\n<script src="./app.js"></script>\n<script>window.addEventListener("DOMContentLoaded",()=>KidzAuth.boot())</script>
 </body></html>
