@@ -3,7 +3,7 @@ class KidzCloud{
  async init(){if(!window.supabase||!KC_CONFIG.SUPABASE_URL)return false;this.client=window.supabase.createClient(KC_CONFIG.SUPABASE_URL,KC_CONFIG.SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});this.ready=true;return true}
  async session(){if(!this.client)return null;return (await this.client.auth.getSession()).data.session}
  async signUp(email,password,name,role="parent"){const {data,error}=await this.client.auth.signUp({email,password,options:{data:{display_name:name,role}}});if(error)throw error;return data}
- async signIn(email,password){const {data,error}=await this.client.auth.signInWithPassword({email,password});if(error)throw error;return data}
+ async signIn(email,password){const {data,error}=await this.client.auth.signInWithPassword({email,password});if(error)throw error;return data}\n async verifySignupOtp(email,token){const {data,error}=await this.client.auth.verifyOtp({email,token,type:"signup"});if(error)throw error;return data}\n async resendSignup(email){const {data,error}=await this.client.auth.resend({type:"signup",email});if(error)throw error;return data}
  async signOut(){if(this.client)await this.client.auth.signOut()}
  async family(){const s=await this.session();if(!s)return null;const {data,error}=await this.client.from("family_members").select("family_id,role,families(*)").eq("user_id",s.user.id).maybeSingle();if(error)throw error;return data}
  async children(familyId){const {data,error}=await this.client.from("child_profiles").select("*").eq("family_id",familyId).order("created_at");if(error)throw error;return data||[]}
