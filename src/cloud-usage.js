@@ -1,0 +1,6 @@
+window.KidzCloudUsage={
+ async today(){if(!kidzCloudState.child)return 0;const {data,error}=await kidzCloud.client.from("daily_usage").select("minutes").eq("child_id",kidzCloudState.child.id).eq("usage_date",KidzFeatures.todayKey()).maybeSingle();if(error)throw error;return data?.minutes||0},
+ async set(minutes){if(!kidzCloudState.child)return;const {error}=await kidzCloud.client.from("daily_usage").upsert({child_id:kidzCloudState.child.id,usage_date:KidzFeatures.todayKey(),minutes:Math.max(0,Math.round(minutes))},{onConflict:"child_id,usage_date"});if(error)throw error;state.screen.used=Math.max(0,Math.round(minutes));localStorage.setItem(STORAGE_KEY,JSON.stringify(state))},
+ async week(){if(!kidzCloudState.child)return[];const d=new Date();d.setDate(d.getDate()-6);const {data,error}=await kidzCloud.client.from("daily_usage").select("*").eq("child_id",kidzCloudState.child.id).gte("usage_date",d.toISOString().slice(0,10)).order("usage_date");if(error)throw error;return data||[]},
+ async hydrate(){const used=await this.today();state.screen.used=used;const week=await this.week(),map=new Map(week.map(x=>[x.usage_date,x.minutes]));const arr=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);arr.push(map.get(d.toISOString().slice(0,10))||0)}state.activity=arr;localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+};
