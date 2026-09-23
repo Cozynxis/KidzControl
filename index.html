@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">\n  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="toastHost" class="toast-host"></div>
@@ -99,5 +100,29 @@
   <article class="panel"><div class="panel-head"><div><span class="eyebrow">TOEGANG</span><h3>Website of app geblokkeerd?</h3></div></div><div class="request-row"><input id="accessTarget" placeholder="Bijv. youtube.com of Discord"><button class="primary kid-primary" data-action="requestAccess">Toegang vragen</button></div></article>
 </template>
 
-<script src="./src/config.js"></script>\n<script src="./src/supabase.js"></script>\n<script src="./src/features.js"></script>\n<script src="./src/cloud-state.js"></script>\n<script src="./src/cloud-filters.js"></script>\n<script src="./src/cloud-usage.js"></script>\n<script src="./src/cloud-activity.js"></script>\n<script src="./src/family-manager.js"></script>\n<script src="./src/onboarding.js"></script>\n<script src="./src/notifications.js"></script>\n<script src="./src/security.js"></script>\n<script src="./src/router.js"></script>\n<script src="./src/device.js"></script>\n<script src="./src/schedule-engine.js"></script>\n<script src="./src/filter-engine.js"></script>\n<script src="./src/analytics.js"></script>\n<script src="./src/kids-experience.js"></script>\n<script src="./src/ui-pages.js"></script>\n<script src="./src/ui-enhancements.js"></script>\n<script src="./src/session-manager.js"></script>\n<script src="./src/error-boundary.js"></script>\n<script src="./src/health-check.js"></script>\n<script src="./src/auth.js"></script>\n<script src="./app.js"></script>\n<script>window.addEventListener("DOMContentLoaded",async()=>{await KidzAuth.boot();try{if(await kidzCloud.session()){await KidzOnboarding.ensure();await Promise.allSettled([KidzCloudFilters.syncToLocal(),KidzCloudUsage.hydrate(),KidzCloudActivity.hydrate()]);if(window.mode)renderPage()}}catch(e){console.warn("Cloud bootstrap:",e)}})</script>
+<script src="./src/config.js"></script>
+<script src="./src/supabase.js"></script>
+<script src="./src/features.js"></script>
+<script src="./src/cloud-state.js"></script>
+<script src="./src/cloud-filters.js"></script>
+<script src="./src/cloud-usage.js"></script>
+<script src="./src/cloud-activity.js"></script>
+<script src="./src/family-manager.js"></script>
+<script src="./src/onboarding.js"></script>
+<script src="./src/notifications.js"></script>
+<script src="./src/security.js"></script>
+<script src="./src/router.js"></script>
+<script src="./src/device.js"></script>
+<script src="./src/schedule-engine.js"></script>
+<script src="./src/filter-engine.js"></script>
+<script src="./src/analytics.js"></script>
+<script src="./src/kids-experience.js"></script>
+<script src="./src/ui-pages.js"></script>
+<script src="./src/ui-enhancements.js"></script>
+<script src="./src/session-manager.js"></script>
+<script src="./src/error-boundary.js"></script>
+<script src="./src/health-check.js"></script>
+<script src="./src/auth.js"></script>
+<script src="./app.js"></script>
+<script>window.addEventListener("DOMContentLoaded",async()=>{await KidzAuth.boot();try{if(await kidzCloud.session()){await KidzOnboarding.ensure();await Promise.allSettled([KidzCloudFilters.syncToLocal(),KidzCloudUsage.hydrate(),KidzCloudActivity.hydrate()]);if(window.mode)renderPage()}}catch(e){console.warn("Cloud bootstrap:",e)}})</script>
 </body></html>
