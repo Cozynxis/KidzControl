@@ -68,6 +68,6 @@ function requestRows(parent){if(!state.requests.length)return '<div class="empty
 function eventRows(){if(!state.events.length)return '<div class="empty">Nog geen gebeurtenissen.</div>';return state.events.slice(0,30).map(e=>'<div class="list-row"><b>'+esc(e.type.replaceAll("_"," "))+'</b><small class="muted">'+new Date(e.at).toLocaleString("nl-NL")+'</small></div>').join("")}
 function applyTheme(){document.documentElement.dataset.theme=state.theme}
 function updateSync(){const x=document.getElementById("syncPill");if(x)x.title="Laatste lokale update: "+new Date().toLocaleTimeString("nl-NL")}
-function toast(msg){const h=document.getElementById("toastHost"),d=document.createElement("div");d.className="toast";d.textContent=msg;h.appendChild(d);setTimeout(()=>d.remove(),2600)}
+function toast(msg){const h=document.getElementById("toastHost"),d=document.createElement("div");d.className="toast";d.textContent=msg;h.appendChild(d);setTimeout(()=>{d.classList.add("removing");setTimeout(()=>d.remove(),240)},2350)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 applyTheme();
