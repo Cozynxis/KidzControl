@@ -17,9 +17,7 @@ function logEvent(type){if(type==="SILENT")return;state.events.unshift({type,at:
 bc?.addEventListener("message",e=>{state=merge(clone(defaults),e.data.state||{});toast("Live wijziging ontvangen");renderPage()});
 window.addEventListener("storage",e=>{if(e.key===STORAGE_KEY){state=loadState();renderPage()}});
 document.addEventListener("click",handleClick);
-document.getElementById("pinInput").addEventListener("keydown",e=>{if(e.key==="Enter")unlockParent()});
-document.getElementById("unlockParent").onclick=unlockParent;
-document.querySelectorAll("[data-open-mode]").forEach(b=>b.onclick=()=>{if(b.dataset.openMode==="kid")openMode("kid");else document.getElementById("pinInput").focus()});
+document.getElementById("pinInput")?.addEventListener("keydown",e=>{if(e.key==="Enter")unlockParent()});\ndocument.getElementById("unlockParent")?.addEventListener("click",unlockParent);\ndocument.querySelectorAll("[data-open-mode]").forEach(b=>b.onclick=()=>{if(b.dataset.openMode==="kid")openMode("kid");else document.getElementById("pinInput")?.focus()});
 function unlockParent(){const pin=document.getElementById("pinInput").value;if(pin===state.parentPin)openMode("parent");else toast("Onjuiste Parent PIN")}
 function openMode(m){mode=m;currentPage="dashboard";document.body.classList.toggle("kid-mode",m==="kid");document.getElementById("authView").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("modeLabel").textContent=m==="parent"?"Parent Mode":"Kids Mode";buildNav();renderPage()}
 function exitMode(){mode=null;document.getElementById("app").classList.add("hidden");document.getElementById("authView").classList.remove("hidden");document.getElementById("pinInput").value=""}
