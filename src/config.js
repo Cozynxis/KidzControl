@@ -1,0 +1,1 @@
+window.KC_CONFIG={SUPABASE_URL:"https://lbjphimwjmluylpozovb.supabase.co",SUPABASE_KEY:"sb_publishable_vGbLV4Lh5oYRSeUo1pqKNg_RbLMPBL0",APP_NAME:"KidzControl",VERSION:"2.0.0",CHANNEL:"kidzcontrol_live_v2"};
